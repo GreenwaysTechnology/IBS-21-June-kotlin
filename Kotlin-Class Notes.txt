@@ -1,0 +1,1093 @@
+
+What is kotlin?
+
+Kotlin is programming language.
+
+Any language follows a style - 
+
+ java is oo pl.
+ javascript multi style language -  object based,functional style,event driven
+    -multi style
+
+JVM Languages:
+JSR -206
+   JAVA PL was only one pl to write code and run on jvm.
+
+
+   x   y   z abc jpl
+   |   |   |  |  |
+     byte code
+  --------------------JVM
+
+jvm dialect  -  
+
+-java
+  -strongly typed /static typed
+
+-Groovy
+    -  Groovy is a powerful, optionally typed and dynamic language, with static-typing and static compilation capabilities.
+    - functional programming capabilities
+
+def a =10; --dynamic typing  --- Object a =10;  --- Object a =new Integer(10)
+
+a=10.6 - double
+
+-js
+
+-python
+
+-jruby
+-Kotlin
+  -initally targeted for jvm
+
+ static typed, type inference
+
+  val variable:Type = 10   val a= 10
+
+ kotlin uses functional programming
+     -higher order function
+
+ kotlin is object oriented
+
+ programming
+	GPL -ANY type of app.
+        DSL -Domain specific language -html
+         -only one domain.
+       - external dsl and internal dsl
+
+     take 1 pile every day at morning 7.am
+
+     internal - common pl leveagres to write dsl code.
+
+Kotlin is multi platform.
+
+pl
+  - imperative - what is it and how is it
+    declartive -focus only what is it?
+    
+   list.sort().filter().map().find().flaten()
+
+Declarative Concurrency
+ -Co routines
+
+declarative -  functional programming -lambda + dsl
+
+
+Learning path:
+
+-language fundamentals
+-functional programming
+-object oriented programming
+-Data structures
+-Concurrency -  async
+-DSL
+
+.....
+Frameworks
+-web frameworks
+-android
+-ds frameworks
+-front end
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+Kotlin can be written as indendant apps or you can write as scripts.
+
+file based.  fileName.kt
+
+tools:
+
+kotlin repl.
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+; is optional
+
+HelloWorld.kt ------- HelloWorldKt.class ------jvm
+
+
+values(data) - literals
+types
+variables
+
+literals:
+primitive literals - strings,numbers,booleans
+user defined literals - objects and arrays
+
+
+types : prmitives and object types.
+
+In kotlin everything is object.
+
+
+variable declaration:
+
+val | var | withoutanykeyword variableName:Type = literal - insipired from typescript.
+
+String interpolation:
+
+var hello:String = "hello"
+
+ hello + "World" - + concatation operator
+
+ "${hello} World"
+
+
+val -immutable
+   -if you reassign you cant override existing memory address.
+   -if you want to change data ,it wont change data in original mememory,rather it creates 
+    new copy of that.
+
+pure function:
+ -method receives parameter never modifies, and return the same 
+
+function   changeCity(city){
+      return city;
+}
+
+ -method receives parameter if you want modify, dont change the original memory location.
+ rather clone of that and return
+
+
+function   updateProfile(profile,city){
+      return Object.assign({},profile,{city})
+}
+
+var -multable
+
+
+Emplyee emp= new Employee()
+
+Employee emp2 = emp;
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+Kotlin generally does not allow a variable holding null or you cant leave empty.
+
+What if i want null to initlized.
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+if is expression.
+
+expression :
+
+   a  = 10 * 10 (expression)
+
+ public int calculate(){
+
+     return 10*10 // expression -value
+ }
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+
+Arrow operator:
+
+  -> Operator is separator 
+
+
+i want to generate a sequence of numbers - range
+
+for( let i of array) -  for(let i in obj) - Iterable.
+.............................................................................................
+
+Any : Is super class for All types in Kotlin
+
+var myNumber = 100
+    var isEvenOrOdd:Any = when {
+        myNumber % 2 == 0 -> 0  // Int parent is Any
+        myNumber % 2 !== 0 -> "Odd"  //String parent is Any
+        else -> println("No Match Found")  //no return - Void - Unit parent is Any
+    }
+    println("isEvenOrOdd :  $isEvenOrOdd")
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+                                         Functions
+
+
+1.fun declaration
+
+2.fun usage - calling
+
+3.parameters
+
+4.default args
+
+5.Named args
+
+6.Return type
+
+7.Unit type
+
+8.Single-expression function
+
+9.Var args-Variable number of arguments
+
+10.infix function
+
+11.local function
+
+12.member functions
+
+13.Generic functions
+
+14.Tail recursive functions﻿
+
+15.Higher order function and Lambdas
+
+16.Extension function
+
+17.inline function
+
+18.suspend function
+
+19.operator function
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+function declaration:
+
+package com.ibs.kotlin.functions
+
+//declare function
+fun sayHello() {
+    //fun body
+    println("sayHello")
+}
+
+//main function
+fun main() {
+  //function invocation
+    sayHello()
+    println(sayHello().javaClass)
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
+parameters ,args,default args, variable length args
+
+
+package com.ibs.kotlin.functions.args
+
+//sayHello(var/val) is not allowed
+fun sayHello(name: String = "default Value") {
+    println("Hello $name")
+}
+
+fun add(a: Int = 0, b: Int = 0) {
+    val c = a.plus(b);
+    println("Add Result $c")
+}
+
+fun sayGreet(name: String? = "Greet") {
+    println("Hello ${name?.uppercase()}")
+}
+
+fun printMe(myvar: Any? = "") {
+    println("My Value $myvar")
+}
+
+//variable args
+fun logger(vararg args: String) {
+    for (arg in args) println(arg)
+}
+
+////////////////////////////////////////////////////////
+//more args
+fun format(
+    str: String,
+    normlizeCast: Boolean = true,
+    upperCaseFirstLetter: Boolean = true,
+    divideByCamelHumps: Boolean = false,
+    wordSeparator: Char = ' '
+) {
+    println("$str $normlizeCast $upperCaseFirstLetter $divideByCamelHumps $wordSeparator")
+}
+
+
+fun main() {
+    //parameter
+    sayHello("Subramanian")
+    //no parameter
+    sayHello();
+    add(1, 2)
+    add()
+    sayGreet("Subramanian")
+    sayGreet()
+    val greetMessage: String? = null;
+    sayGreet(greetMessage)
+    printMe(12)
+    printMe("hello")
+    //supply var args
+    logger("Employee.kt", "Waring", "Save method is not called")
+    logger("Employee.kt", "error", "remove throws error", "402")
+
+    //format
+    format("Hello", upperCaseFirstLetter = false)
+    format("hello", wordSeparator = ',')
+
+}
+////////////////////////////////////////////////////////////////////////////////////////////
+package com.ibs.kotlin.functions.returns
+
+fun sayHello(): String {
+    return "Hello";
+}
+
+//Return type must be speficied
+//fun sayHai() {
+//    return "Hello"; //error
+//}
+fun sayHai(): String? {
+    val message = "hai";
+    //val message = null;
+    return message
+}
+
+//no return type : Unit
+// * The type with only one value: the `Unit` object. This type corresponds to the `void` type in Java.
+fun printHello(name: String?): Unit {
+    if (name != null)
+        println("Hello $name")
+    else
+        println("Hi there")
+}
+
+fun login(name: String?, password: String?): Any? {
+    //if (name == "admin" && password == "admin") return "Login success" else return Unit;
+    return if (name == "admin" && password == "admin") "Login success" else Unit;
+}
+
+fun evenOrOdd(myNumber: Int): Any {
+    return when {
+        myNumber % 2 == 0 -> "$myNumber Even"// String parent is Any
+        myNumber % 2 !== 0 -> "$myNumber Odd"  //String parent is Any
+        else -> println("No Match Found")  //no return - Void - Unit parent is Any
+    }
+}
+
+fun main() {
+    var hello = sayHello()
+    println(hello.uppercase())
+    println(sayHai()?.uppercase())
+    printHello("Subramanian")
+    printHello(null)
+    var res = login("adminxxx", "admin")
+    //is Operator eq to instance of operator
+    if (res is Unit) {
+        println("Login failed")
+    } else {
+        println(res);
+    }
+    var isEvenOrOdd = evenOrOdd(13)
+    println(isEvenOrOdd)
+    isEvenOrOdd = evenOrOdd(12)
+    println(isEvenOrOdd)
+    isEvenOrOdd = evenOrOdd(0)
+    println(isEvenOrOdd)
+
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+
+function can have body
+
+ fun myFun(){
+  ..............
+  ....
+  return
+ }
+function is having only one statement - return value or no return no
+
+package com.ibs.kotlin.functions.returns
+
+//Imperative style
+fun doubleIt(x: Int): Int {
+    return x * 2
+}
+
+//Declarative Style : Single Expression function
+// if y are only returning, you can remove {} and return statement
+fun doubleItV2(x: Int): Int = x * 2
+//Single expression and type inference in return
+fun doubleItV3(x: Int = 1) = x * 2
+//No return 
+fun printMe(name: String) = println("$name")
+
+fun main() {
+    println(doubleIt(10))
+    println(doubleItV2(10))
+    println(doubleItV3(10))
+    printMe("Kotlin")
+
+
+}
+
+
+Generics:
+
+As in java , Kotlin also supports.
+
+-generic function
+-generic classes
+-generic interface
+.............................................................................................
+package com.ibs.kotlin.functions.generics
+
+fun <T> setValue(item: T) {
+    println(item);
+}
+
+fun main() {
+    var value = setValue<Int>(10)
+    println(value)
+    value = setValue<String>("Subramanian")
+}
+..............................................................................................
+
+Recursive Function calls:
+
+ Recursive is one the core concept/principle in functional programming.
+
+Kotlin supports tail recursive functions.
+
+Recursive function call itself, if it grows, it may throw stack over flow exception.
+
+How to optimize recursive functions, by adding "tailrec" in front of fun
+
+package com.ibs.kotlin.functions.recursive
+
+val eps = 1E-10 // "good enough", could be 10^-15
+
+//add tailrec modifier to apply algorthim
+tailrec fun findFixPoint(x: Double = 1.0): Double =
+    if (Math.abs(x - Math.cos(x)) < eps) x else findFixPoint(Math.cos(x))
+
+tailrec fun factorial(n: Int): Long {
+    return if (n == 1) {
+        n.toLong()
+    } else {
+        n * factorial(n - 1)
+    }
+}
+
+fun main() {
+    println(factorial(10))
+    println(findFixPoint())
+}
+/////////////////////////////////////////////////////////////////////////////////////////////
+                                 Functional Programming in Kotlin
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+function in lambda calculs:
+
+ -Unit of compuation
+
+Kotlin has implemented lambda calculs.
+
+According to kotlin.
+
+ -Functions are first class citizen.
+
+First class Citizen: (special):
+
+- functions are passed around .(in,out)
+
+This means the language supports passing functions as arguments to other functions, returning them as the values from other functions, and assigning them to variables or storing them in data structures
+
+functions are literals , means values like int,double,string
+
+  val a =10;(literal)
+
+  val myjob = fun doStuff(){}
+ 
+Kotlin functions are first class -  which means that they can be storedd in variables and ds,passed as arg to and return from other functions.
+
+
+Higer order function:
+
+First-class functions are a necessity for the functional programming style, in which the use of higher-order functions is a standard practice. 
+
+
+In mathematics and computer science, a higher-order function is a function that does at least one of the following:
+
+->takes one or more functions as arguments,
+->returns a function as its result.
+
+Can i say this fun is Higher order fun?
+
+fun  map(){
+
+}
+
+Ans: No because it does not follow the thumb rule of higher order function.
+
+Since Kotlin static typed language, we need to tell type of "function" itself
+
+fun  map(FunctionType){
+
+}
+
+Note: Function Type itself is Object only behind the scnene.
+
+Kotlin uses a family of function types:
+.......................................
+
+1. (Int) -> String ---- (T) -> T
+2. (Int,Int) -> Int
+3. ()-> Unit
+
+Rules:
+1.all function types have a parenthesized types list and return type
+   (A,B)->C
+2.Function type can optionally have an additional "receiver" type , which is represented
+  a dot in the notation
+   A.(B,C)->D
+ 
+  A - Receiver
+  B,C -args
+  D-Return type
+
+3.suspend functions belong to function types of a special kind, which have a "suspend" modifier
+  in the notation 
+   suspend (A,B)->D
+   suspend A.(B,C)->D
+
+ eg:
+
+  (a:Int,b:Int) -> Shape
+
+What if i have Nullable notation use parentheses
+
+    ((A,B)->C)?
+
+ 
+Kotlin Syntax;
+
+   action:()->Unit
+   a:Int
+
+action: variable
+()->Unit : Function Type
+
+
+How to instantiate function Type? How to initalize the function variable?
+
+1.Anonymous Functions:
+
+  - function with out name
+
+"function can be stored into a variable, that variable can be used to invoke that function"
+
+
+package com.ibs.kotlin.functions.higherorder
+
+package com.ibs.kotlin.functions.higherorder
+
+import kotlin.concurrent.thread
+
+//Promote this is as higher Order
+fun sayGreet(action: () -> Unit) {
+    //invoke function
+    action();
+}
+
+fun sayHai(action: (name: String?) -> Unit) {
+    action("Subramanian");
+}
+
+fun doProcess(action: (String) -> String) {
+    val res = action("hello")
+    println("$res")
+}
+
+fun login(userName: String = "", password: String = "", resolve: (String) -> Unit, reject: (String) -> Unit) {
+    val status = "Login Success"
+    val errMessage = "Login failed"
+    if (userName == "admin" && password == "admin") resolve(status) else reject(errMessage)
+}
+
+//Nullable and function type
+fun compute(action: ((Int) -> Unit)?) {
+    //Reference has a nullable type '((Int) -> Unit)?', use explicit '?.invoke()' to make a function-like call instead
+    action?.invoke(10)
+}
+
+fun computeWithoutNullable(action: (Int) -> Unit) {
+    //Reference has a nullable type '((Int) -> Unit)?', use explicit '?.invoke()' to make a function-like call instead
+    //action?.invoke(10)
+    //action(20);
+    action.invoke(30)
+}
+
+//concurrency ; regular threads
+fun delay(callback: (String) -> Unit) {
+    //showing some delay
+    thread(name = "IBS Thread") {
+        //delay
+        Thread.sleep(5000)
+        //after 5sec return some response: Simulate non blocking
+        callback("Hey I am delayed - ${Thread.currentThread().name}")
+    }
+}
+
+fun main() {
+    //Anonymous function
+
+    delay(fun(message) {
+        println(message);
+    })
+    sayGreet(fun() {
+        println("Hello,I am Callback Function")
+    })
+    sayHai(fun(name) {
+        println("Hai $name")
+    })
+    doProcess(fun(message: String): String {
+        return "Ok! $message"
+    })
+    login(userName = "admin", password = "admin", fun(status) {
+        println(status)
+    }, fun(err) {
+        println(err)
+    })
+    login(userName = "foo", password = "bar", fun(status) {
+        println(status)
+    }, fun(err) {
+        println(err)
+    })
+    //
+    compute(fun(res) {
+        println(res);
+    })
+    compute(null);
+    computeWithoutNullable(fun(res) {
+        println(res);
+    })
+
+}
+//////////////////////////////////////////////////////////////////////////////////////////
+
+Higher order Function: How to return function from another function.
+
+Function scope:
+
+1.local scope - inner fn
+2.global scope -regular fun declared inside module 
+3.member scope -  fun declared inside class.
+
+
+fun counter(): Function<Int> {
+    fun add (a: Int, b: Int): Int {
+        return a + b
+    }
+    return ::add
+}
+    val add = counter();
+    println(add(3, 8))
+    println(add(30, 80))
+
+
+fun counter(): Function<Int> {
+    //anonymous function
+    return fun(a: Int, b: Int): Int {
+        return a + b
+    }
+}
+  val add = counter();
+    println(add(3, 8))
+    println(add(30, 80))
+
+
+2.Lambda
+/////////
+
+Lambda is also function literal.
+
+syntax:
+
+val |var  foo:(T1,T2)->T = {args -> function body} 
+
+Here type is inferenced
+
+val |var  foo = {args -> function body} 
+
+in the lambda there is no "return" keyword.
+last expression is treated as return value
+
+
+package com.ibs.kotlin.functions.lambdas
+
+import kotlin.concurrent.thread
+
+//normal function
+fun add(a: Int? = 1, b: Int? = 1): Int? {
+    return a?.plus(b ?: 0);
+}
+
+//function expression
+fun addExpress(a: Int = 1, b: Int) = a.plus(b);
+
+//without type inference
+//val sum: (Int, Int) -> Int = { a: Int, b: Int ->
+//    println("Sum lambda ")
+//     a + b //return
+//}
+//lambda with type inference and return type is also infered
+val sum = { a: Int, b: Int ->
+    println("Sum lambda ")
+    //last expression would be return value and accordingly type is updated
+    a + b //return
+    //   "Hello"
+    // true
+}
+
+//literal means value - 10,"Hello",true, Object, func is literal -| any , lambda
+//lambda has no args and parameters
+val greeter = {
+    println("Greeter Me")
+    println("Greeter Me")
+    println("Greeter Me")
+}
+
+///if lambda has single parameter, we dont need to declare arg variable and ->, kotlin supplies
+//implicit variable called "it"
+//var sayMyName = { name: String -> name.uppercase() }
+//when we use "it" , we need to tell the arg and return type
+var sayMyName: (String) -> String = { it.uppercase() }
+
+//Higher order function and lambda
+fun sayGreet(action: () -> Unit) {
+    //calling function: callback
+    action()
+}
+
+//int,fun
+fun compute(n: Int, action: (Double) -> Unit) {
+    action(n * 2.1);
+}
+
+//This is not recommended design
+//fun format(
+//    block: () -> Unit,
+//    str: String,
+//    normlizeCast: Boolean = true,
+//    upperCaseFirstLetter: Boolean = true,
+//    divideByCamelHumps: Boolean = false,
+//    wordSeparator: Char = ' ',
+//) {
+//    println("$str $normlizeCast $upperCaseFirstLetter $divideByCamelHumps $wordSeparator")
+//    block()
+//}
+
+fun format(
+    str: String,
+    normlizeCast: Boolean = true,
+    upperCaseFirstLetter: Boolean = true,
+    divideByCamelHumps: Boolean = false,
+    wordSeparator: Char = ' ',
+    block: () -> Unit // function type at end of arg list
+) {
+    println("$str $normlizeCast $upperCaseFirstLetter $divideByCamelHumps $wordSeparator")
+    block()
+}
+
+//returning lambda from higher order function
+fun counter(): Function<Int> {
+    //lambda
+    return { a: Int, b: Int ->
+        a + b
+    }
+}
+
+fun main() {
+    println(add(1, 2))
+    println(addExpress(3, 8))
+    println(sum(34, 90))
+    greeter()
+    println(sayMyName("Subramanian"))
+
+    //pass lambda as parameter as part of function parameter
+    sayGreet({
+        println("Hello Lambda as parameter")
+    })
+    //DSL Like syntax : when you pass lambda as parameter we dont need to use ()
+    sayGreet {
+        println("Hello Lambda as parameter")
+    }
+    compute(2, { println(it) })
+
+    //DSL Like syntax : when you pass lambda as parameter we dont need to use ()
+    compute(2) { println(it) }
+
+    thread(name = "IBS Thread") {
+        //delay
+        Thread.sleep(5000)
+        //after 5sec return some response: Simulate non blocking
+    }
+    //is this is DSL Friendly : No
+    // format { println("something") }, ( "", normlizeCast = true)
+    //Kotlin recommends if fun takes more args along with lambda , function type should be last arg
+    //so that we can ommit , ()
+
+    format("str", normlizeCast = true, wordSeparator = ',') {
+        println("Awesome lambda")
+    }
+
+    //lambda stored in a variable
+    val awesome = { println("Awesome lambda") }
+    format("str", normlizeCast = true, wordSeparator = ',', block = awesome)
+
+    val add = counter();
+    println(add(3, 8))
+}
+///////////////////////////////////////////////////////////////////////////////////////////
+
+inline:
+
+->every function when it is invoked - a stack frame is created, when y create stack frame
+  it allocates memory,it uses some cup....
+->In kotlin every function is object , instance of "Function" class
+
+
+  copy of the callee function code  and paste into  into calling place(Who is invoking caller)
+
+fun sum(){
+   calc()
+    ///code-calc
+}
+sum()
+fun calc(){
+  ///code-calc
+}
+
+
+//callee
+inline fun isMultipleOf(number: Int, multipleOf: Int): Boolean {
+    return number % multipleOf == 0
+}
+
+
+fun main() {
+    //caller
+    val res = isMultipleOf(1, 23)
+    println(res);
+}
+//////////////////////////////////////////////////////////////////////////////////////////
+
+Static meta Programming: We can add any properties on object outside class
+
+this is called in kotlin called extensions
+
+ - extension function
+
+class MyClass 
+
+class Calculator {}
+
+//new Function : extension function is lambda
+
+fun Calculator.sum(a: Int, b: Int) = a + b
+
+fun Calculator.substract(a: Int, b: Int): Int {
+    val result = a - b
+    println("substract")
+    return result
+}
+
+fun Calculator.add(i: Int, i1: Int): Int {
+    return i + i1
+}
+
+How to add method on existing lib; Integer 
+
+//Int is "receiver type"
+
+fun Int.myAdd(i: Int): Int {
+    println("this $this")
+    return this  + i  1 + 3
+}
+
+1.myadd(2) => 1 + 3
+
+1 is passed via this 2 is passed as explicit arg.
+
+
+infix -  function  : to write code dsl friendly
+
+
+
+1.myadd(2) normal function call
+
+1 myadd 2 - dsl code
+
+package com.ibs.kotlin.oo.classes
+
+//String,Integer,Many: can i add new method on existing classes without adding inside classes
+//if i want to add my own string method inside String class?
+
+class Calculator {}
+
+//new Function : extension function is lambda
+
+fun Calculator.sum(a: Int, b: Int) = a + b
+
+fun Calculator.substract(a: Int, b: Int): Int {
+    val result = a - b
+    println("substract")
+    return result
+}
+
+fun Calculator.add(i: Int, i1: Int): Int {
+    return i + i1
+}
+
+infix fun Int.myAdd(i: Int): Int {
+    println("this $this")
+    return i + this
+}
+
+fun main() {
+    val calc = Calculator()
+    println(calc.sum(10, 10))
+    var r = calc.substract(12, 34)
+    println(r)
+    println(calc.add(1, 1))
+
+    var x: Int = 10;
+    var y: Int = 20
+    //normal function
+    println(x.myAdd(y))
+    
+    //dsl code 
+    println (x myAdd y)
+
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////
+
+type aliases
+
+val a:Int
+
+val a:MyInteger
+
+val NodeSet = Set<Network.Node>
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+Blocking
+Non Blocking
+Async programming
+
+  -Threads
+
+method------call-------on thread-----method executes----
+
+
+   |m1 ----execution
+   |m2
+   |
+
+
+   | -----m1 ----execution
+   |------m2
+   |
+
+    | ---m1---m2---m3---m4.... m5
+
+
+programming styles:
+
+1.callabacks
+
+ fun getData (callback:){
+     once task done
+     callback(data) ----
+ }
+
+2.Futures - Promises
+
+3.async await
+
+4.Reactive Programming - rxjava,rxjs,rxkotlin
+
+
+How kotlin implemens async programming?
+
+coroutines
+ -async /non blocking implementation in declarative.
+
+
+
+sync style of async programming without callbacks
+
+let compiler write callbacks for you, you focus only readable code.
+
+Thread vs coroutine
+
+suspend function
+
+written using coroutine builders -apis
+
+launch
+async
+
+types of coroutines
+
+-local  - 
+-global
+
+Globalscope - object
+
+
+//////////////////////////////////////////////////////////////////////////////////
+
+result call api 1
+result call api 2
+
+merge res1 result
+
+//////////////////////////////////////////////////////////////////////////////////
+
+api can return single
+
+sync way
+
+async way
+
+
+multi value
+
+sync way
+async way
+
+KTOR :
+
+- ASYNC BY DEFAULT 
+-POWERED WITH COROUTINES
+-
+
+Application:
+
+  Application object -----| plugins (features)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

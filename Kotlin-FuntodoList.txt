@@ -1,0 +1,42 @@
+Functions Road map
+
+
+1.fun declaration
+
+2.fun usage - calling
+
+3.parameters
+
+4.default args
+
+5.Named args
+
+6.Return type
+
+7.Unit type
+
+8.Single-expression function
+
+9.Var args-Variable number of arguments
+......................................................................................,,,,,
+
+10.infix function
+
+11.local function
+
+12.member functions
+
+13.Generic functions
+
+14.Tail recursive functions﻿
+
+15.Higher order function and Lambdas
+
+16.Extension function
+
+17.inline function
+
+18.operator overloading
+
+
+

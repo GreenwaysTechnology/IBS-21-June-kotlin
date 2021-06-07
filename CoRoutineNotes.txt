@@ -1,0 +1,502 @@
+How to schedule task in background. using thread
+
+import kotlin.concurrent.thread
+
+
+fun main() {
+    println("Main Program starts ${Thread.currentThread().name}")
+    thread(name = "My Thread") {
+        println("Back ground threads starts ${Thread.currentThread().name}")
+        Thread.sleep(5000)
+        println("Back ground threads Finishes ${Thread.currentThread().name}")
+    }
+}
+
+Using coroutine:  finish main thread before main thread completes
+
+package com.ibs.kotlin.concurrency
+
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+
+
+fun main() {
+    println("Main Program starts ${Thread.currentThread().name}")
+    GlobalScope.launch {
+        
+            println("Back ground threads starts ${Thread.currentThread().name}")
+            Thread.sleep(5000)
+            println("Back ground threads Finishes ${Thread.currentThread().name}")
+        
+    }
+    println("Main Program ends ${Thread.currentThread().name}")
+
+}
+
+Pause the main thread until coroutine finishes
+
+import kotlinx.coroutines.launch
+
+
+fun main() {
+    println("Main Program starts ${Thread.currentThread().name}")
+    GlobalScope.launch {
+
+            println("Back ground threads starts ${Thread.currentThread().name}")
+            Thread.sleep(5000)
+            println("Back ground threads Finishes ${Thread.currentThread().name}")
+
+    }
+    println("Main Program ends ${Thread.currentThread().name}")
+    //Pause the main thread
+    Thread.sleep(6000)
+
+}
+
+output:
+
+Main Program starts main
+Main Program ends main
+Back ground threads starts DefaultDispatcher-worker-1
+Back ground threads Finishes DefaultDispatcher-worker-1
+
+
+Thread.sleep: blocks the main thread - creates thread blocks it, it is not good
+so we have to use function  called delay
+
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
+
+fun main() {
+    println("Main Program starts ${Thread.currentThread().name}")
+    GlobalScope.launch {
+
+        println("Back ground threads starts ${Thread.currentThread().name}")
+        //Thread.sleep(5000)
+        delay(5000)
+        println("Back ground threads Finishes ${Thread.currentThread().name}")
+
+    }
+    println("Main Program ends ${Thread.currentThread().name}")
+    //Pause the main thread
+    Thread.sleep(6000)
+
+}
+
+delay is suspend function, can be called only with in contextof coroutine scope
+
+fun main() {
+    println("Main Program starts ${Thread.currentThread().name}")
+    GlobalScope.launch {
+
+        println("Back ground threads starts ${Thread.currentThread().name}")
+        //Thread.sleep(5000)
+        delay(5000)
+        println("Back ground threads Finishes ${Thread.currentThread().name}")
+
+    }
+    println("Main Program ends ${Thread.currentThread().name}")
+    //Pause the main thread
+ //   Thread.sleep(6000)
+//    Suspend function 'delay' should be called only from a coroutine or another suspend function
+    delay(6000)
+
+}
+
+
+how to call delay inside main ? 
+
+inside run blocking builder function
+
+fun main() {
+    println("Main Program starts ${Thread.currentThread().name}")
+    GlobalScope.launch {
+
+        println("Back ground threads starts ${Thread.currentThread().name}")
+        //Thread.sleep(5000)
+        delay(5000)
+        println("Back ground threads Finishes ${Thread.currentThread().name}")
+
+    }
+    println("Main Program ends ${Thread.currentThread().name}")
+    //Pause the main thread
+    //   Thread.sleep(6000)
+//    Suspend function 'delay' should be called only from a coroutine or another suspend function
+    runBlocking { delay(6000) }
+
+}
+
+code refactoring:
+
+wrap whole code inside runBlocking lambda
+
+way -1 
+fun main() {
+    runBlocking {
+        println("Main Program starts ${Thread.currentThread().name}")
+        GlobalScope.launch {
+
+            println("Back ground threads starts ${Thread.currentThread().name}")
+            //Thread.sleep(5000)
+            delay(5000)
+            println("Back ground threads Finishes ${Thread.currentThread().name}")
+
+        }
+        println("Main Program ends ${Thread.currentThread().name}")
+        delay(6000)
+    }
+}
+
+
+way-2
+fun main() = runBlocking {
+    println("Main Program starts ${Thread.currentThread().name}")
+    GlobalScope.launch {
+
+        println("Back ground threads starts ${Thread.currentThread().name}")
+        //Thread.sleep(5000)
+        delay(5000)
+        println("Back ground threads Finishes ${Thread.currentThread().name}")
+
+    }
+    println("Main Program ends ${Thread.currentThread().name}")
+    delay(6000)
+}
+
+
+how to encapsulate delay logic outside?
+
+fun main() = runBlocking {
+    println("Main Program starts ${Thread.currentThread().name}")
+    GlobalScope.launch {
+
+        println("Back ground threads starts ${Thread.currentThread().name}")
+        sleepTime(5000)
+        println("Back ground threads Finishes ${Thread.currentThread().name}")
+
+    }
+    println("Main Program ends ${Thread.currentThread().name}")
+    sleepTime(6000)
+}
+
+suspend fun  sleepTime(time:Long){
+    delay(time)
+}
+///////////////////////////////////////////////////////////////////////////////////////
+
+Coroutine  Builders:
+Coroutine builders are functions that help us create a coroutine. They can be called from normal functions because they do not suspend themselves. Three coroutine builders are listed below.
+
+
+-launch
+-runBlocking
+-async
+
+launch: start a coroutine in the background and keep working.
+runBlocking: this blocks the current thread and waits for the coroutine to finish execution
+
+async: perform an asynchronous operation and return a deferred object which is the equivalent of a JavaScript promise. We can call await on the deferred value in order to wait and get the result.
+
+
+GlobalScope.launch
+GlobalScope.async
+runBlocking	
+
+Types of scope:
+
+1.Globalscope
+  when we launch a coroutine in a page/program, will be available across the application
+2.localscope
+  when we launch a coroutine in a page/program, will not be available across the application
+
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+
+
+fun main() = runBlocking {
+    println("Main Program starts ${Thread.currentThread().name}")
+    GlobalScope.launch {
+
+        println("Back ground threads starts ${Thread.currentThread().name}")
+        sleepTime(5000)
+        println("Back ground threads Finishes ${Thread.currentThread().name}")
+
+    }
+    launch {
+        println("local scope")
+    }
+    println("Main Program ends ${Thread.currentThread().name}")
+    sleepTime(6000)
+}
+
+suspend fun  sleepTime(time:Long){
+    delay(time)
+}
+
+////////////////////////////////////////////////////////////////////////////////////////
+
+lanuch and async:
+.................
+fun main() = runBlocking {
+    println("Main Program starts ${Thread.currentThread().name}")
+    GlobalScope.launch {
+
+        println("Back ground threads starts ${Thread.currentThread().name}")
+        sleepTime(5000)
+        println("Back ground threads Finishes ${Thread.currentThread().name}")
+
+    }
+    launch {
+        println("local scope ${Thread.currentThread().name}")
+    }
+    println("Main Program ends ${Thread.currentThread().name}")
+    sleepTime(6000)
+}
+
+suspend fun  sleepTime(time:Long){
+    delay(time)
+}
+
+
+Main Program starts main
+Back ground threads starts DefaultDispatcher-worker-1
+Main Program ends main
+local scope main
+
+Why launch function runs on main thread.
+
+Because it inherits runBlocking builder, since runBlocking running on main thread, which inherits with lanuch
+
+What is return type of lanuch function?
+
+
+Job Object:
+
+What is use of job Object?
+
+To control coroutine lanuched
+
+fun main() = runBlocking {
+    println("Main Program starts ${Thread.currentThread().name}")
+    val job = GlobalScope.launch() {
+
+        println("Back ground threads starts ${Thread.currentThread().name}")
+        sleepTime(5000)
+        println("Back ground threads Finishes ${Thread.currentThread().name}")
+
+    }
+    println("Main Program ends ${Thread.currentThread().name}")
+    // sleepTime(6000)
+    job.join()
+}
+
+suspend fun sleepTime(time: Long) {
+    delay(time)
+}
+
+even cancel coroutine using job.cancel
+
+lanuch : Fire and forget
+//////////////////////////////////////////////////////////////////////////////////////////
+
+async:
+import kotlinx.coroutines.*
+
+
+fun main() = runBlocking {
+    println("Main Program starts ${Thread.currentThread().name}")
+    val job = GlobalScope.async  {
+
+        println("Back ground threads starts ${Thread.currentThread().name}")
+        sleepTime(5000)
+        println("Back ground threads Finishes ${Thread.currentThread().name}")
+        "Hello"
+
+    }
+    println("Main Program ends ${Thread.currentThread().name}")
+    println(job.await())
+}
+
+suspend fun sleepTime(time: Long) {
+    delay(time)
+}
+////////////////////////////////////////////////////////////////////////////////////////////
+
+How to cancel coroutine?
+
+cancel,timeouts,Exception handling.
+
+Why should we cancel coroutine?
+
+-Result if you dont need longer.
+-It is taking too long to respond
+
+in order to cancel , it must be cooperative 
+
+
+import kotlinx.coroutines.*
+
+
+fun main() = runBlocking {
+    val job = launch {
+        repeat(1000) { i ->
+            println("job: I'm sleeping $i ...")
+            delay(500L)
+        }
+    }
+    delay(1300L) // delay a bit
+    println("main: I'm tired of waiting!")
+   // job.cancel() // cancels the job
+    //job.join() // waits for job's completion
+    job.cancelAndJoin()
+
+    println("main: Now I can quit.")
+}
+
+Cooperative functions: launch,yield,withContext,withTimeout
+
+
+fun main() = runBlocking {
+    val job = launch {
+        repeat(1000) { i ->
+            println("job: I'm sleeping $i ...")
+           // delay(500L)
+            yield()
+        }
+    }
+    delay(1300L) // delay a bit
+    println("main: I'm tired of waiting!")
+//    job.cancel() // cancels the job
+//    job.join() // waits for job's completion
+    job.cancelAndJoin()
+    println("main: Now I can quit.")
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+import kotlinx.coroutines.*
+
+fun main() = runBlocking {
+    val startTime = System.currentTimeMillis()
+    val job = launch(Dispatchers.Default) {
+        var nextPrintTime = startTime
+        var i = 0
+        while (isActive) { // cancellable computation loop
+            // print a message twice a second
+            if (System.currentTimeMillis() >= nextPrintTime) {
+                println("job: I'm sleeping ${i++} ...")
+                nextPrintTime += 500L
+            }
+        }
+    }
+    delay(1300L) // delay a bit
+    println("main: I'm tired of waiting!")
+    job.cancelAndJoin() // cancels the job and waits for its completion
+    println("main: Now I can quit.")
+}
+
+
+Exception :
+
+
+fun main() = runBlocking {
+    val job = launch {
+        try {
+            repeat(1000) { i ->
+                println("job: I'm sleeping $i ...")
+                 delay(500L)
+               // yield()
+            }
+        } catch (es: CancellationException) {
+            println("exception is caught")
+        } finally {
+            println("Finally")
+        }
+    }
+    delay(1300L) // delay a bit
+    println("main: I'm tired of waiting!")
+//    job.cancel() // cancels the job
+//    job.join() // waits for job's completion
+    job.cancelAndJoin()
+    println("main: Now I can quit.")
+}
+///////////////////////////////////////////////////////////////////////////////////////////
+
+You cant execute suspending function inside finally block because it was already cancelled.
+
+if you want to execute a suspending function from finally block then wrap the code  within
+
+"WithContext(nonCancellable)"
+
+
+import kotlinx.coroutines.*
+
+fun main() = runBlocking {
+    val job = launch {
+        try {
+            repeat(1000) { i ->
+                println("job: I'm sleeping $i ...")
+                delay(500L)
+                // yield()
+            }
+        } catch (es: CancellationException) {
+            println("exception is caught")
+        } finally {
+            //this runs in separate context
+            withContext(NonCancellable) {
+                delay(500)
+                println("Finally")
+            }
+        }
+    }
+    delay(1300L) // delay a bit
+    println("main: I'm tired of waiting!")
+//    job.cancel() // cancels the job
+//    job.join() // waits for job's completion
+    job.cancelAndJoin()
+    println("main: Now I can quit.")
+}
+//////////////////////////
+
+Timeouts:
+
+Cancelling coroutine if it takes long time than execepted.
+
+withTimeout withTimeoutOrNull
+
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeout
+
+fun main() = runBlocking {
+    withTimeout(2000) {
+        for (i in 0..500) {
+            print("$i.");
+            delay(500)
+        }
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+Composing suspending functions﻿ : refer doc
+
+Sequential by default﻿
+Concurrent using async﻿
+Lazily started async﻿
+////////////////////////////////////////////////////////////////
+
+Asynchronous Flow
+
+Representing multiple values
+Sequences﻿
+Suspending functions﻿
+Flows﻿
+////////////////////////////////////////////////////////////////////////////////////////
+
+Channels:
+Deferred values provide a convenient way to transfer a single value between coroutines. Channels provide a way to transfer a stream of values.

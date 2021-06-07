@@ -1,0 +1,891 @@
+
+				      Kotlin
+				Language Fundamentals
+
+-variables,type sytem
+
+Hello World.
+
+Every Kotlin
+
+Create project
+
+helloworld.kt
+
+with command line args
+fun main(args : Array<String>) {
+    println("Hello, World!")
+}
+
+or
+
+fun main() {
+    println("Hello, World!")
+}
+
+variables,literals,val,var,typeinference,types
+
+package com.mycom
+
+fun main() {
+    //mutable
+    var firstName: String = "Subramaian"
+    println("First Name " + firstName);
+    //can be reassigned
+    firstName = "Siva"
+    //immutable
+    val lastName: String = "Murugan";
+    //cant reassign ; compile time error
+    //lastName = "Samy"
+    println("Last Name " + lastName)
+
+    //Type inference
+    val age = 36
+    println("Age " + age)
+
+    //Strings and chars
+    val c = 'c'
+    println("Character $c")
+    
+    
+    //String interpolation
+    val isValid = true
+    println("Is Valid $isValid")
+    //numbers
+    val salary = 1500.89
+    val points = 23.7f
+    val counter: Int = 9
+    val imageSize: Byte = 12;
+    val miles = 76666L;
+    println("Numbers-- double $salary floats $points  ints $counter Byte $imageSize Long $miles")
+
+
+}
+
+Type conversion
+
+fun main() {
+    val a: Int = 1
+    val b: Long = a.toLong()
+    println("a $a b $b")
+    val imageSize: Byte = 12;
+    val bigImageSize: Int = imageSize.toInt();
+    println("imageSize $imageSize bigImageSize $bigImageSize")
+
+}
+/////////////////////////////////
+Operators
+package com.mycom.lang
+
+fun main() {
+    //operators
+    println("MathMatical Operators")
+    val a = 10;
+    val b = 20;
+    var c = a + b;
+    println("Add $c")
+    c = a - b;
+    println("Substract $c")
+    c = a * b;
+    println("Multiply $c")
+    c = a / b;
+    println("Div $c")
+    c = a % b;
+    println("Mod $c")
+    println("Augmented  Operators")
+    c += 10;
+    println("Augmented  $c")
+    //Increment and Decrement Operators
+    var counter = 1;
+    println("Increment ${++counter}")
+
+    println("Logical Operators")
+
+    var isvalid = true;
+    var isEnabled = true;
+    var booleanResult = isvalid && isEnabled;
+    println("Boolean Result $booleanResult")
+
+    println("Comparsional  Operators")
+
+    //Equal
+    val x = 100
+    val y = 100
+    var eqResult = x == y;
+    println("Strutural Equal $eqResult")
+
+    var s = "hello";
+    var s1 = s;
+    eqResult = s === s1;
+    println("Reference Equal $eqResult")
+
+
+    //Comparasional Operator
+
+    var isBig = a > b; //a.compareTo(b)
+    println("Is Big $isBig")
+
+    //Null Values and It operators
+
+    //Regular variables
+    var str: String = "abc"
+    //str = null; //null cant be assigned
+    //safe to access
+    println("Regular variables without Null ${str.length}")
+    //Nullable Variables ; what if i want null as well Type?
+    var str1: String? = "abc";
+    println("Nullable variables  Null ${str.length}")
+    //null assigment
+    str1 = null;
+    //if it is null, still not able to call any property
+
+    //Soultion 1: Checking for null in condition
+    if (str1 != null) {
+        println("Nullable variables  Null ${str1.length}")
+    } else {
+        println("Nullable variable having null value")
+    }
+
+    //Soultion 2 : Using safe Naviation Operator ?.
+    println("Safe Navigation Operator ${str1?.length}");  //Result would be null if variable is null
+
+    //Soution 3 : Using Elvis Operator
+
+    val res = str1?.length ?: 0;
+    println("Elvis Operator Result ${res}")
+
+    var str3: String? = "Hello";
+    // var str3: String? = null;
+    //if you want Null Pointer Exception in case if it is null
+    println("!! Operator : " + str3!!.length)
+
+
+    //Type cast
+    val aStr: String = "Hello";
+    val bInt: Int = aStr as Int;
+    //   println ("Type casted result ${bInt}") //Causes ClassCastException
+
+    //type cast exception
+    val cInt: Int? = aStr as? Int
+    println("Type casted result ${cInt}") //safely  ClassCastException
+
+
+}
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+Conditional Statements:
+
+if,when:
+
+package com.mycom.lang
+
+import java.lang.Integer.parseInt
+
+fun main() {
+    var a = 100;
+    var b = 200;
+    var max = a;
+    if (a < b) {
+        max = b
+    }
+    println("Max $max")
+    if (a < b) max = b
+    println("Max $max")
+
+    //With else
+    if (a > b) {
+        max = a
+    } else {
+        max = b
+    }
+    println("Max $max")
+
+    //As expression
+    // As expression : more readable like tenary operator
+    max = if (a > b) a else b
+    println("Max with Expression $max")
+
+    //expression with  branches
+    max = if (a > b) {
+        print("Choose a")
+        a //return a value
+    } else {
+        print("Choose b ")
+        b //return b value
+    }
+    println("Max with Expression $max")
+    //When expression
+    var x = 10
+    when (x) {
+        1 -> println("x == 1")
+        2 -> println("x == 2")
+        else -> { // Note the block
+            println("x is neither 1 nor 2")
+        }
+    }
+
+    // either this or that - ,
+    var y = 0;
+    when (y) {
+        0, 10 -> println("y value is from 0 or 10 $y")
+        else -> println("otherwise")
+    }
+
+    //Result of function expression
+    var s = "100"
+    x = 100
+    when (x) {
+        parseInt(s) -> println("s encodes x")
+        else -> println("s does not encode x")
+    }
+    var validNumbers = 1..20;
+    //Range and in
+    x = 1234
+    when (x) {
+        in 1..10 -> println("x is in the range $x")
+        in validNumbers -> println("x is valid")
+        !in 10..20 -> println("x is outside the range")
+        else -> println("none of the above")
+    }
+    // expression
+    x = 700
+    var myExpression = when (x) {
+        100 -> x * 100
+        else -> println("Else Expression")
+    }
+    println("My Expression ${myExpression.toString()}") //if no match found ; Return value is Unit
+
+    myExpression = when (x) {
+        100 -> x * 100
+        else -> "Else Expression"
+    }
+    println("My Expression ${myExpression}") //if no match found ; Return value is Unit
+
+    //when can also be used as a replacement for an if- else if chain.
+    // If no argument is supplied, the branch conditions are simply boolean expressions,
+    // and a branch is executed when its condition is true:
+
+    var myNumber = 100
+    var isEvenOrOdd = when {
+        myNumber % 2 == 0 -> "Even"
+        myNumber % 2 !== 0 -> "Odd"
+        else -> "No Match Found"
+    }
+    println("isEvenOrOdd :  $isEvenOrOdd")
+
+
+}
+////////////////////////////////////////////////////////////////////////////////////////////﻿
+
+Loops : for,ranges,while,do..while
+
+fun main() {
+    //for loop
+    for (i in 1..4) {  // equivalent of 1 <= i && i <= 4
+        println(i)
+    }
+    println(".....")
+    //reverse order
+    for (i in 4 downTo 1) print(i)
+    println(".....")
+
+    //increment by 2
+    for (i in 1..8 step 2) print(i)
+    println()
+    for (i in 12 downTo 10 step 2) println(i)
+
+    //until
+    println("until")
+    for (i in 1 until 10) {       // i in [1, 10), 10 is excluded
+        print(i)
+    }
+    //while loop
+    var x = 1
+    while (x <= 10) {
+        println("While $x")
+        x++
+    }
+
+    var a = 1
+    do {
+        println("do while $a")
+        a++
+    } while (a <= 10)
+
+
+}
+///////////////////////////////////////////////////////////////////////////////////////////
+
+Conditional Statements : break,return,@label
+
+package com.mycom.lang
+
+fun main() {
+    //return statement; used in normal expression
+    val message: String? = "hello";
+    val s = message ?: return
+    println(s);
+
+    val name:String = "Subramanian"
+  //  val name: String? = null;
+    val s1 = name ?: throw IllegalArgumentException("Name required")
+    println(s1.toString());
+
+    //label
+    loop@ for (i in 1..100) {
+        for (j in 1..100) {
+            if (i == 50) break@loop
+            println("i=$i  j=$j")
+        }
+    }
+
+}
+////////////////////////////////////////////////////////////////////////////////////////////////
+					Functions
+
+1.simple function  declaration
+
+//simple function
+fun sayHello() {
+    println("Hello");
+}
+
+//main function
+fun main() {
+    sayHello();
+}
+
+
+2.Simple,default args,varargs
+
+package com.mycom.`fun`
+
+fun add(a: Int, b: Int) {
+    val c = a + b;
+    println("Result is $c")
+}
+
+//default arg
+fun multiply(a: Int = 0, b: Int = 0) {
+    val c = a * b;
+    println("Result is $c")
+}
+
+//var args
+fun log(vararg args: String) {
+    for (arg in args) {
+        println(arg);
+    }
+}
+
+//mixing var-arg named parameter
+fun logger(version: Int = 1, vararg args: String) {
+    println("$version")
+    for (arg in args) {
+        println(arg);
+    }
+
+}
+
+//nullable and parameter
+fun doStuff(name: String? = "default") {
+    //with safe Navigation operator
+    println(name?.toUpperCase())
+    //Elvis Operator
+    println(name?.toUpperCase() ?: "something".toUpperCase())
+}
+
+fun main() {
+    add(10, 10);
+    multiply(2, 2)
+    multiply();
+    multiply(3)
+    multiply(b = 2)
+    multiply(a = 12, b = 90)
+    multiply(b = 90, a = 23)
+    log();
+    log("Hello", "How are you?", "How things are?")
+    //logger("Hello", "How are you?", "How things are?",version = 2)
+    logger(2, "Hello", "How are you?", "How things are?")
+    doStuff("Subramanian")
+    doStuff();
+
+}
+
+3.function return,Unit,Type, Single Expression function
+
+package com.mycom.`fun`
+
+//No Return so Default is Unit
+//fun doStuff(): Unit {
+//    println("Do Stuff ");
+//    return;     // `return Unit` or `return` is optional
+//}
+//Unit is optional
+fun doStuff() {
+    println("Do Stuff ");
+    return;     // `return Unit` or `return` is optional
+}
+
+//function can return any type of value
+fun sayHai(): String {
+    return "Hai"
+}
+
+//function can return nullable
+fun sayGreet(name: String?): String? {
+    if (name != null) {
+        return name;
+    }
+    return null;
+}
+
+//function expression: the curly braces can be omitted and the body is specified after a = symbol:
+
+fun double(x: Int = 1): Int = x * 2
+
+
+fun main() {
+    doStuff();
+    println(sayHai())
+    println(sayGreet("subramanian")?.toUpperCase())
+    println(sayGreet(null)?.toUpperCase() ?: "Nothing is returned")
+    println("Double It ${double(10)}")
+}
+...........................................................................................
+
+
+Tail Recurssive Functions:
+.........................
+
+In computer science, a tail call is a subroutine call performed as the final action of a procedure.[1] If the target of a tail is the same subroutine, the subroutine is said to be tail-recursive, which is a special case of direct recursion. Tail recursion (or tail-end recursion) is particularly useful, and often easy to handle optimization in implementations.
+
+Tail calls can be implemented without adding a new stack frame to the call stack. Most of the frame of the current procedure is no longer needed, and can be replaced by the frame of the tail call, modified as appropriate (similar to overlay for processes, but for function calls)
+  val eps = 1E-10 // "good enough", could be 10^-15
+
+    tailrec fun findFixPoint(x: Double = 1.0): Double =
+        if (Math.abs(x - Math.cos(x)) < eps) x else findFixPoint(Math.cos(x))
+
+    println(findFixPoint())
+   tailrec fun factorial(n: Int): Long {
+       return if (n == 1) {
+           n.toLong()
+       } else {
+           n*factorial(n - 1)
+       }
+    }
+    println(factorial(10))
+
+
+
+
+/////////////////////////////////////
+                          Infix function
+
+Extension Function
+
+package com.mycom.`fun`.advanced
+
+//Member function of
+infix fun Int.calculate(x: Int): Int {
+    return x.dec()
+}
+
+infix fun String.concat(str: String): String = "Welcome $str"
+fun main() {
+    1.calculate(12); //old style
+    2 calculate 23;
+    "".concat("Subramanian")
+    "" concat "Subramanian"
+}
+///////////////////////////////////////////////////////////////////////////////////////////
+Lambdas
+
+package com.mycom.func.fp
+
+//normal funcition
+fun add(a: Int? = 1, b: Int? = 1): Int? {
+    return a?.plus(b ?: 0);
+}
+
+//function expression
+fun addExpress(a: Int = 1, b: Int) = a.plus(b);
+
+//Lambda Expression / function as literal
+val sum: (Int, Int) -> Int = { a: Int, b: Int ->
+    println("Sum lambda ")
+    a + b //return
+};
+
+//Omitting Type defintion
+val sumSimple = { a: Int, b: Int ->
+    println("Lambda simple")
+    a + b;
+}
+
+//Type inference, in Return type
+val sumTypeInference = { a: Int, b: Int -> a + b };
+
+//without any parameter and return value
+val doStuff = {
+    println("with out any parameter")
+    "Hello"
+};
+
+//single parameter
+//var sayMyName = { name: String -> name.capitalize() }
+//Using it parameter
+//var sayMyName = { it: String -> it.capitalize() }
+//Omit it and -> arg itself
+//var sayMyName: (String) -> String = { name:String -> name }
+var sayMyName: (String) -> String = { it.capitalize() }
+
+fun main() {
+    var res = add(10, 10);
+    println("Add Normal Function $res")
+    res = addExpress(1, 2)
+    println("Add Express Funciton $res")
+    res = sum(12, 89);
+    println(" Lambda Function-Simple $res")
+    res = sumSimple(1, 4);
+    println(" Lambda Function-Simple $res")
+    res = sumTypeInference(23, 80)
+    println("Single Body $res")
+    println(doStuff());
+    println(sayMyName("subramanian"))
+
+}
+////////////////////////////////////////////////////////////////////////////////////////////
+
+Higher Order functions : how to pass function as parameter to another function
+
+package com.mycom.func.fp
+
+//higher order function : function as parameter
+
+//callback function
+fun sayGreet(action: () -> Unit) {
+    //calling function: callback
+    action()
+}
+
+//callback function with args
+fun sayHello(action: (String) -> Unit) {
+    var fakeMessage = "Hello! callback";
+    action(fakeMessage)
+}
+
+//callback function with return
+fun sayHai(action: (String) -> String) {
+    val response = action("subramanian");
+    println(response);
+}
+
+//two parameter higher order function
+fun compute(n: Int, action: (Double) -> Unit) {
+    action(n * 2.1);
+}
+
+//Generic function and higher order
+fun <T> myFun(t: T, action: (T) -> Unit) {
+    action(t);
+}
+
+fun main() {
+    //anonmous function
+    sayGreet(fun() {
+        println("Hello")
+    })
+    sayHello(fun(message: String) {
+        println(message);
+    })
+    sayHai(fun(name): String {
+        return "Welcome to $name"
+    })
+    /////////////
+    //lambda passing
+    sayGreet({
+        println("Hello Lambda")
+    })
+    sayHello({ message -> println(message) })
+    //omitting ()
+    sayHello { message -> println(message) }
+    sayHai { name -> name };
+    sayHai { it }
+    sayHello { println(it) }
+    //method reference
+    sayHello(::println)
+    //compute
+    compute(4, { res -> println(res) })
+    compute(4) { res -> println(res) }
+    val printer = { res: Double -> println(res) }
+    compute(45, printer);
+
+    myFun<String>("Hello") { res -> println(res) }
+    myFun<Int>(90) { res -> println(res) }
+    myFun<Int>(90) { println(it) }
+    myFun<Int>(90, ::println)
+
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+callback with delay , nullable type
+package com.mycom.func.fp
+
+import kotlin.concurrent.thread
+
+//fun rollDice(callback: (result: Double) -> Unit): String {
+//    thread {
+//        Thread.sleep(5000)
+//        callback(45)
+//    }
+//    return "role diced"
+//}
+//with Nullable
+fun rollDice(callback: ((result: Double) -> Unit)? = null): String {
+    thread(name = "MyThread") {
+        Thread.sleep(5000)
+        println(Thread.currentThread().name)
+        callback?.invoke(5.7)
+    }.join()
+    return "role diced"
+}
+
+fun main() {
+    var res = rollDice { println(it) }
+    //var res = rollDice(::println)
+    println(res);
+    //not passed lambda
+    res = rollDice()
+    println(res);
+
+
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
+Returning function from another function
+
+package com.mycom.func.fp
+
+//syntax 1
+//fun counter(): Function<Int> {
+//    fun add (a: Int, b: Int): Int {
+//        return a + b
+//    }
+//    return ::add;
+//}
+//syntax 2
+//fun counter(): Function<Int> {
+//    //anonymous function
+//    return fun(a: Int, b: Int): Int {
+//        return a + b
+//    }
+//}
+//fun counter(): Function<Int> {
+//    //lambda
+//    val sum = { a: Int, b: Int ->
+//        a + b
+//    }
+//    return sum;
+//}
+
+fun counter(): Function<Int> {
+    //lambda
+    return { a: Int, b: Int ->
+        a + b
+    }
+}
+
+fun main() {
+    val add = counter();
+    println(add(3, 8))
+
+
+}
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+lnline functions:
+
+  copy and paste function code into calling place.
+
+What is inlining?
+
+Inlining is basically requesting the compiler to copy the (inlined) code at the calling place.
+Why it is required?
+When a program is executed and a function is called, CPU stores the memory address of the instruction following the function call, copies the arguments of the function into a stack and finally transfers control to the specified function. The CPU then executes the function code, stores the function return value in a predefined memory location/register and returns control to the calling function.
+
+ 
+In Kotlin, the higher order functions or lambda expressions, all stored as an object which takes some memory and might increase the memory overhead. Sometimes, the function does a very basic functionality that passing the control is not even worth but as it (the function) is being used at multiple places, we need to create a separate function. To reduce the memory overhead of such functions we can use the inline keyword which ultimately requests the CPU to not allocate any memory for the function and simply copy the body of that function at the calling place.
+
+
+Let’s take an example.
+suppose we have a function which simply checks if the first argument is a multiple of the second argument and returns a boolean.
+  
+fun isMultipleOf (number: Int, multipleOf : Int): Boolean{
+    return number % multipleOf == 0
+}
+
+
+
+Now to use this function as a higher order function,
+  
+fun  ArrayList.filterOnCondition(condition: (T) -> Boolean): ArrayList{
+    val result = arrayListOf()
+    for (item in this){
+        if (condition(item)){
+            result.add(item)
+        }
+    }
+    return result
+}
+
+var list = arrayListOf()
+    for (number in 1..10){
+        list.add(number)
+    }
+    
+val resultList = list.filterOnCondition { isMultipleOf(it, 5) }
+print(resultList)
+
+
+
+Do not inline for bigger functions as it degrades the performance.
+
+
+In the above example, the functionality of the isMultipleOf is so small that it can be copied but as it can be used at multiple places, we created it as a separate function. As this function is passed as an argument to filterOnCondition function, CPU will assign it to some object which will take some memory. Also, for every item in the list, the CPU will jump to the memory address of isMultipleOf function and will pass back to result.
+
+To prevent this, we can make the isMultipleOf function as inline which will as the compiler to copy it to the calling place which will prevent the memory allocation of the function and jumping of the CPU at runtime.
+  
+inline fun isMultipleOf (number: Int, multipleOf : Int): Boolean {
+     return number % multipleOf == 0
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+Receiver Object:
+
+Scope functions: this and it 
+package com.mycom.func.fp
+
+data class Person(var name: String, var age: Int, var city: String) {
+    fun moveTo(city: String) {
+        this.city = city
+    }
+
+    fun incrementAge() {
+        age++
+    }
+}
+
+fun main() {
+    val alice = Person("Alice", 20, "Amsterdam")
+    println(alice)
+    alice.moveTo("London")
+    alice.incrementAge()
+    println(alice)
+    //Scope functions
+    /**
+     * Executing a lambda on non-null objects: let
+     * Introducing an expression as a variable in local scope: let
+     */
+    //this : run,apply,with
+   val runRes= alice.run {
+        println("run")
+        println("$this  ${this.age} $age")
+        this
+    }
+    println(runRes);
+
+    val applyRes = alice.apply {
+        println("apply")
+        this.incrementAge()
+    };
+    println(applyRes)
+
+//    val withRes = alice
+
+    //it : let,also
+    alice.let {
+        println("let")
+        //println("$it ${it.age} $age") // here $age not possible
+        println("$it ${it.age} ")
+        it.age
+    }
+
+}
+////////////////////////////////////////////////////////////////////////////////////////////
+
+Collections
+
+package com.mycom.collections
+
+fun main() {
+    val list = listOf<String>("Subramanian", "Murugan", "Dhivya Sree", "Shirisha")
+    list.let {
+        for (e in it) {
+            println(e)
+        }
+        it.forEach(::println)
+
+    }
+    //val numList = mutableListOf<Int>(1, 2, 3, 4);
+    mutableListOf<Int>(1, 2, 3, 4).apply {
+        add(5)
+        add(6)
+        add(7)
+    }.also {
+        println("sorting list")
+    }.sortedByDescending { it }.forEach(::print)
+
+    //set
+    setOf<Int>(1, 2, 2, 4).run {
+        forEach(::println)
+    }
+    mutableSetOf<Int>(1, 2, 2, 4).run {
+        add(5)
+        add(6)
+        add(7)
+        add(8)
+        add(9)
+        forEach(::println)
+    }.let {
+        println("Processed")
+    }
+    mutableMapOf<String, Int>("key1" to 1, "key2" to 2, "key3" to 3).apply {
+        values.forEach(::println)
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////////
+Object oriented Programming concepts and implementations
+.........................................................
+
+class:
+
+ normal
+ data class
+ Enum class
+ abstract class
+ sealed class
+ interfaces
+ object class
+ component class
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

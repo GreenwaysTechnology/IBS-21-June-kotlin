@@ -1,0 +1,1017 @@
+kotlin advanced
+
+instance variable initalization
+
+way -1
+class Employee {
+    var name:String? =null;
+}
+fun main(){
+    val emp = Employee()
+    emp.name = "Subramanian";
+}
+
+way-2
+class Employee {
+    var name: String? = null;
+
+    init {
+        name = "Subramanian"
+    }
+}
+
+fun main() {
+    val emp = Employee()
+}
+
+way -3
+class Employee {
+    var name: String? = null;
+    constructor(name: String) {
+        this.name = name;
+    }
+}
+
+fun main() {
+    val emp = Employee("Subramanian")
+    println(emp.name);
+}
+
+//way -4
+class Employee(var name:String) {
+}
+fun main(){
+    val emp = Employee("Subramanian")
+    println(emp.name);
+}
+
+way -5:Primary constructors
+class Employee(var name:String)
+fun main(){
+    val emp = Employee("Subramanian")
+    println(emp.name);
+}
+//////////////////////////////////////////////////////////////////////////////
+Primary constructors and secondary constructor
+
+class Foo constructor() {
+
+    init {
+        println("init -1 ")
+    }
+
+    init {
+        println("init -2 ")
+    }
+
+    constructor(a: String) : this() {
+        println("Constructor ")
+        println(a)
+    }
+
+    constructor(a: Int) : this() {
+        println(a)
+
+    }
+
+    constructor(a: Int, b: Int) : this() {
+        println("$a $b")
+    }
+}
+
+class Foo(){
+
+    init {
+        println("init -1 ")
+    }
+  
+    init {
+        println("init -2 ")
+    }
+
+    constructor(a: String) : this() {
+        println("Constructor ")
+        println(a)
+    }
+
+    constructor(a: Int) : this() {
+        println(a)
+
+    }
+
+    constructor(a: Int, b: Int) : this() {
+        println("$a $b")
+    }
+}
+
+
+class Foo{
+
+    init {
+        println("init -1 ")
+    }
+
+    init {
+        println("init -2 ")
+    }
+
+    constructor(a: String)  {
+        println("Constructor ")
+        println(a)
+    }
+
+    constructor(a: Int) {
+        println(a)
+
+    }
+
+    constructor(a: Int, b: Int) {
+        println("$a $b")
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+compile time error for instance variables
+
+
+class Foo {
+   //variables must be initalized 
+    var bar:String;
+}
+
+Property must be initialized or be abstract
+
+Solution:
+
+1.explicit value
+class Foo {
+   //variables must be initalized
+    var bar:String="bar";
+}
+
+2.class Foo {
+   //Null can not be a value of a non-null type String
+    var bar:String=null ; 
+}
+
+3.class Foo {
+   //Null can not be a value of a non-null type String
+    var bar:String?=null
+}
+
+4.class Foo {
+    /variables are initalized
+   lateinit var bar: String;
+}
+
+setters and getters 
+
+no getters and getters is used.
+
+if you want to use setters and getters
+
+ class Customer {
+    var firstName: String? = null
+        set(value) {
+            //backing fields
+            field = value
+        }
+        get() {
+            return field
+        }
+    var age: Int? = null
+        set(value) {
+            if (value?.compareTo(18)!! < 0) {
+                throw  Exception("Age must be greater than 18")
+            } else {
+                field = value;
+            }
+        }
+}
+//////////////////////////////////////////////////////////////////////////////////////////
+inheritance:
+by default classes are final 
+open keyword is used to make it available for inheritance
+call default constructor of parent from child
+
+open class Animal {
+
+}
+class Dog:Animal() {
+
+}
+
+adding methods
+package com.mycom.oo
+
+open class Animal {
+    fun eat(): String {
+        return "Animal eat";
+    }
+}
+
+class Dog : Animal() {
+
+}
+
+fun main() {
+    //var dog = Dog();
+    // var dog:Dog = Dog();
+    var dog: Animal = Dog();
+    println(dog.eat());
+}
+
+///
+overriding:
+base class method by default final
+open class Animal {
+    fun eat(): String {
+        return "Animal eat";
+    }
+}
+so make it available for overriding
+sub class method has to use "overrride" keyword
+super key word can be used to call parent version as well
+
+open class Animal {
+    open fun eat(): String {
+        return "Animal eat";
+    }
+}
+
+package com.mycom.oo
+
+open class Animal {
+    open fun eat(): String {
+        return "Animal eat";
+    }
+}
+
+class Dog : Animal() {
+    //overriding
+    override fun eat(): String {
+        return "Dog eat ${super.eat()}" ;
+    }
+}
+
+fun main() {
+    //var dog = Dog();
+    // var dog:Dog = Dog();
+    var dog: Animal = Dog();
+    println(dog.eat());
+}
+
+//calling sub class method of parent class type
+
+class Dog : Animal() {
+    //overriding
+    override fun eat(): String {
+        return "Dog eat ${super.eat()}" ;
+    }
+    fun bark():String{
+        return "Barking"
+    }
+}
+
+  var dog: Animal = Dog();
+    println(dog.eat());
+    //calling sub class method of parent type
+    println(dog.bark()) //error
+
+Solution:
+    var dog: Animal = Dog();
+    println(dog.eat());
+    //calling sub class method of parent type
+    var tempDog = dog as Dog;
+    println(tempDog.bark())
+
+/////////////////////////////////////////////////////////////////////////////////
+
+Abstract class:
+//abstract classes
+
+abstract class Animal() {
+    abstract fun eat(): String;
+    abstract val type: String;
+    fun saveBirds(): String {
+        return "Save Animals From Global Warming";
+    }
+}
+
+class Dog(override var type: String = "Domestic") : Animal() {
+    //overriding
+    override fun eat(): String {
+        return "Dog eat";
+    }
+
+    fun bark(): String {
+        return "$type Barking"
+    }
+}
+
+fun main() {
+    //var dog = Dog();
+    // var dog:Dog = Dog();
+    var dog: Animal = Dog();
+    println(dog.eat());
+    println(dog.saveBirds());
+
+    //calling sub class method of parent type
+    var tempDog = dog as Dog;
+    println(tempDog.bark())
+}
+//////////////////////////////////////////////////////////////////////////////////////////
+interfaces:
+..........
+interface Eatable {
+    fun eat(): String;
+}
+
+interface SaveAnimals {
+    fun save(): String {
+        return "Save Animals";
+    }
+}
+
+interface MyInterface {
+    val Prop: Int; //abstract
+}
+
+class Dog : Eatable, SaveAnimals, MyInterface {
+    override val Prop: Int
+        get() = 12;
+
+    override fun eat(): String {
+        return "Dog Eats"
+    }
+
+    fun bark(): String {
+        return "Bark"
+    }
+}
+
+fun main() {
+    //var dog = Dog();
+    // var dog:Dog = Dog();
+    var dog: Eatable = Dog();
+    println(dog.eat());
+    //calling sub class method of parent type
+    var tempDog = dog as Dog;
+    println(tempDog.bark())
+    println(tempDog.save())
+    println(dog.Prop)
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+
+Method conflicts and how to avoid them:
+
+interface A {
+    fun foo() {
+        print("A")
+    }
+
+    fun bar()
+}
+
+interface B {
+    fun foo() {
+        print("B")
+    }
+
+    fun bar() {
+        print("bar")
+    }
+}
+
+class C : A {
+    override fun bar() {
+        print("bar")
+    }
+}
+
+class D : A, B {
+    override fun foo() {
+        super<A>.foo()
+        super<B>.foo()
+    }
+
+    override fun bar() {
+        super<B>.bar()
+    }
+}
+
+fun main(){
+    val tmp = D();
+    tmp.foo()
+    tmp.bar()
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+//SAM - Single Abstract method
+fun interface KRunnable {
+    fun invoke()
+}
+
+fun interface IntPredicate {
+    fun accept(i: Int): Boolean
+}
+
+//implementation
+fun main(){
+    var runner = object : KRunnable {
+        override fun invoke(): Unit {
+            println("invoke")
+        }
+    }
+    runner.invoke()
+    // Creating an instance of a class
+    val isEven = object : IntPredicate {
+        override fun accept(i: Int): Boolean {
+            return i % 2 == 0
+        }
+    }
+    println(isEven.accept(12))
+}
+
+access modifiers:
+// file name: example.kt
+package foo
+
+private fun foo() { ... } // visible inside example.kt
+
+public var bar: Int = 5 // property is visible everywhere
+    private set         // setter is visible only in example.kt
+
+internal val baz = 6    // visible inside the same module
+////////////////////////////////////////////////////////////////////////////
+
+Data classes:
+You often create classes whose main purpose is to hold data. In such classes, some standard functionality and utility functions are often mechanically derivable from the data. In Kotlin, these are called data classes and are marked with data.
+
+-built in 
+-toString,equals,copy,destructuring,hashcode api
+-cant use open keyword means not inheritable
+
+
+data class User(val name: String, val age: Int)
+
+
+fun main() {
+    var user = User("Subramanian", 18)
+    println(user)
+    var usercopy = user.copy("Subramanian", 18)
+    println(usercopy)
+    println(user == usercopy)
+    //destructure
+    val (name,age) = user;
+    println("$name $age")
+}
+//////////////////////////////////////////////////////////////////////////////////////////
+
+Enum classes:
+.............
+
+-defines named constant.
+Each enum constant is an object. Enum constants are separated with commas.
+
+enum class Direction {
+    NORTH, SOUTH, WEST, EAST
+}
+
+Since each enum is an instance of the enum class, it can be initialized as:
+
+enum class Color(val rgb: Int) {
+        RED(0xFF0000),
+        GREEN(0x00FF00),
+        BLUE(0x0000FF)
+}
+Implementing interfaces in enum classes﻿
+
+enum class Direction {
+    NORTH, SOUTH, WEST, EAST
+}
+
+interface MyColor {
+    fun applyColor()
+}
+
+enum class Color(val rgb: Int) : MyColor {
+    RED(0xFF0000) {
+        override fun applyColor() {
+            println("red color is applied")
+        }
+    },
+    GREEN(0x00FF00) {
+        override fun applyColor() {
+            println("green color is applied")
+        }
+
+    },
+    BLUE(0x0000FF) {
+        override fun applyColor() {
+            println("blue color is applied")
+        }
+    },
+}
+
+fun main() {
+    println(Direction.NORTH)
+    println(Color.BLUE)
+    println(Color.BLUE.rgb)
+    println(Color.BLUE.applyColor())
+    Color.values().iterator().forEach { println(it) }
+    val color = Color.BLUE
+    when (color) {
+        Color.BLUE -> println("Blue")
+    }
+}
+
+////////////
+sealed classes:
+...............
+-for state management.
+
+-Restricted hierarchies
+-Set
+-Types
+-Contain Values
+
+sealed class Result {
+ 
+   class Success(val items:List<String>):Result()
+   class Failure(val error:Throwable):Result()
+
+}
+
+when(result){
+is Result.Success->showItems(result.items)
+is Result.Failure->result.error.printStackTrace()
+}
+
+
+sealed class Data {
+    data class Success(val data: String) : Data()
+    data class Error(val error: String) : Data()
+    object Loading : Data()
+}
+
+fun getData(): Data {
+    return Data.Success((100..1000).random().toString())
+}
+
+
+fun main() {
+    val data = getData()
+    when (data) {
+        is Data.Success -> {
+            println(data)
+        }
+        is Data.Error -> {
+            println(data)
+        }
+        is Data.Loading -> {
+            println(data)
+        }
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////////
+
+Generics:
+
+//class ArrayUtil<T>(private val array: Array<T>){
+//    fun findElement(element: T, foundElement: (index: Int, element: T?) -> Unit){
+//        for(i in array.indices){
+//            if(array[i] == element){
+//                foundElement(i, array[i])
+//                return
+//            }
+//        }
+//        foundElement(-1, null)
+//        return
+//    }
+//}
+
+fun<T> findElement(array: Array<T>, element: T, foundElement: (index: Int, element: T?) -> Unit){
+    for(i in array.indices){
+        if(array[i] == element){
+            foundElement(i, array[i])
+            return
+        }
+    }
+    foundElement(-1, null)
+    return
+}
+
+fun<X, Y> justForTesting(param1: X, param2: Y){
+    println("$param1 and $param2")
+}
+
+fun main() {
+
+    justForTesting<String, Int>("3", 4)
+
+
+    findElement(arrayOf(1,2,3,4,5), 3) {index, element ->
+        println("Index $index")
+        println("Element $element")
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////
+Object class and companion objects
+
+-single tons
+-in java we use patterns to create singletons
+-using static variables and methods.
+-static variables are not part of objects/instances but part of classes
+-kotlin does not support static modifier
+
+object CustomerSingleTon {
+    //static variable
+    var id: Int = 10;
+
+    //static variable
+    fun getMessage(): String {
+        return "Hello"
+    }
+}
+
+fun main() {
+    println(CustomerSingleTon.id)
+    println(CustomerSingleTon.getMessage())
+}
+
+
+
+Inner/Nested classes:
+....................
+class Outer {
+    private val bar: Int = 1
+    class Nested {
+        fun foo() = 2
+    }
+}
+fun main() {
+    val demo = Outer.Nested().foo() // == 2
+    println(demo)
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+//Object expression : to replace anonmous inner class.
+
+package com.mycom.oo
+
+interface DownloadListener {
+    fun onDownloadStarted()
+    fun onDownloadCompleted(file: String)
+    fun onProgressUpdate(progress: Int)
+}
+
+class Downloader {
+
+    var downloadListener: DownloadListener? = null
+
+    fun downloadFile(file: String) {
+        downloadListener?.onDownloadStarted()
+        for (i in 1..10) {
+            Thread.sleep(600)
+            downloadListener?.onProgressUpdate(i * 10)
+        }
+        downloadListener?.onDownloadCompleted(file)
+    }
+
+}
+
+fun main() {
+    val downloader = Downloader()
+    downloader.downloadListener = object : DownloadListener {
+        override fun onDownloadStarted() {
+            println("Download Started...")
+        }
+
+        override fun onDownloadCompleted(file: String) {
+            println("$file Downloaded.")
+        }
+
+        override fun onProgressUpdate(progress: Int) {
+            println("$progress% Downloaded")
+        }
+    }
+    downloader.downloadFile("FileA.mkv")
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+
+Delegation Patterns:
+
+package com.mycom.oo
+
+import kotlin.reflect.KProperty
+
+class Delegate {
+    operator fun getValue(thisRef: Any?, property: KProperty<*>): String {
+        return "$thisRef, thank you for delegating '${property.name}' to me!"
+    }
+
+    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: String) {
+        println("$value has been assigned to '${property.name}' in $thisRef.")
+    }
+}
+
+class Example {
+    var p: String by Delegate()
+}
+
+fun main() {
+    val example = Example();
+    example.p = "Example"
+    println(example.p)
+}
+
+
+interface Downloader1 {
+    fun download()
+}
+
+interface Player {
+    fun play()
+}
+
+class FileDownloader(private val file: String) : Downloader1 {
+    override fun download() {
+        println("$file Downloaded")
+    }
+}
+
+class FilePlayer(private val file: String) : Player {
+    override fun play() {
+        println("$file Playing")
+    }
+}
+
+class MediaFile(
+    private val downloader: Downloader1,
+    private val player: Player
+) : Downloader1 by downloader, Player by player
+
+
+fun main() {
+    val file: String = "File1.mkv"
+    val mediaFile = MediaFile(FileDownloader(file), FilePlayer(file))
+    mediaFile.download()
+    mediaFile.play()
+}
+/////////////////////////////////////////////////////////////////////////////////////////
+
+Lazy properties﻿
+
+lazy() is a function that takes a lambda and returns an instance of Lazy<T> which can serve as a delegate for implementing a lazy property.
+
+val lazyValue: String by lazy {
+    println("computed!")
+    "Hello"
+}
+
+  //lazy
+    println(lazyValue)
+    println(lazyValue)
+
+Observable properties﻿
+Delegates.observable() takes two arguments: the initial value and a handler for modifications.
+
+The handler is called every time you assign to the property (after the assignment has been performed). It has three parameters: a property being assigned to, the old value and the new one:
+.........................................................................................
+
+Type aliase:
+............
+
+typealias Predicate<T> = (T) -> Boolean
+
+fun foo(p: Predicate<Int>) = p(42)
+
+fun main() {
+    val f: (Int) -> Boolean = { it > 0 }
+    println(foo(f)) // prints "true"
+
+    val p: Predicate<Int> = { it > 0 }
+    println(listOf(1, -2).filter(p)) // prints "[1]"
+}
+//////////////////////////////////////////
+inline classes:
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
+Extensions :
+
+Kotlin provides an ability to extend a class with new functionality without having to inherit from the class or use design patterns such as Decorator. This is done via special declarations called extensions
+-add new function on into class after declaring class declaration.
+
+fun main(args: Array<String>) {
+
+    var str1: String = "Hello "
+    var str2: String = "World"
+
+    var str3: String = "Hey "
+
+    println(str3.add(str1, str2))
+
+    val x: Int = 6
+    val y: Int = 10
+
+    val greaterVal = x.greaterValue(y)
+
+    println(greaterVal)
+}
+
+fun String.add(s1: String, s2: String): String {
+
+    return this + s1 + s2
+}
+
+fun Int.greaterValue(other: Int): Int {
+
+    if (this > other)
+        return this
+    else
+        return other
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+Operator Overloading:
+
+import java.lang.NumberFormatException
+import java.util.*
+
+fun main(args: Array<String>)
+{
+    var a1 = Alien()
+    a1.skills = "Java"
+    a1.show()
+
+    var a2 = Alien()
+    a2.skills = "SQL"
+    a2.show()
+
+//    var a3 = a1 plus a2
+    var a3 = a1 + a2
+    a3.show()
+}
+
+//infix fun Alien.plus(a : Alien) : Alien
+operator infix fun Alien.plus(a : Alien) : Alien
+{
+    var newAlien = Alien()
+    newAlien.skills = this.skills + " " + a.skills
+    return newAlien
+}
+
+
+--------------------------------------------------------------------------------
+			    Alien.kt
+--------------------------------------------------------------------------------
+
+class Alien
+{
+
+    var skills : String? = null
+    fun show()
+    {
+        println(skills)
+    }
+
+}
+
+
+DSL:
+....
+
+1.Domain specific languages
+2.Internal DSL And External DSL
+3.characteristics : Context and fluency
+4.What makes kotlin special  for internal dsls?
+ -optional semi colon
+ -drop () and . using infix functions
+
+class Car {
+
+ infix fun drive(speed:Int?){
+    println("driving")
+ }
+
+}
+fun main(){
+  val car = Car();
+  car.drive(10)
+
+  car drive 10 // simple dsl
+}
+
+5.Extension methods give you  the power of fluency
+
+val greet="hello";
+
+fun String.shout() = toUpperCase();
+
+println(greet.shout())
+
+6.no () for passing last lambda 
+
+fun compute(n: Int, action: (Double) -> Unit) {
+    action(n * 2.1);
+}
+ compute(4) { res -> println(res) }
+
+7.implicit receivers 
+
+lets think about js functions are executed on objects
+
+function sayGreet(name){
+  log(`${this.toUpperCase()} $name`)
+}
+
+		
+              context object
+		|
+sayGreet.call(("hello","Raj")
+
+binding function on object dynamically.
+
+Kotlin:
+	      context object
+		|
+fun call(greet:String.(String)->Unit){
+
+  // greet("Hello","Jane")
+    "Hello".greet("Jane")
+	
+}
+call {name->
+  println("${this.toUpperCase() $name")
+}
+
+With Generics
+fun call(greet:T.(String)->Unit){
+
+  // greet("Hello","Jane")
+    "Hello".greet("Jane")
+	
+}
+
+8. this and it
+call {
+  println("${this.toUpperCase() $it")
+}
+
+9.Lets build some dsl
+
+class Meeting(val name: String) {
+    val start = this;
+    infix fun at(time: IntRange) {
+        println("$name meeting starts at $time")
+    }
+}
+
+infix fun String.meeting(block: Meeting.() -> Unit) {
+    Meeting(this).block()
+}
+
+fun main() {
+    "Planning" meeting {
+        start at 3..15
+    }
+    "Project" meeting {
+        start at 3..15
+    }
+}
+
+another example
+//another dsl
+class Robot {
+    var left = "left"
+    var right = "right"
+    var fast = "fast"
+    infix fun turns(direction: String) {
+        println("turns $direction")
+    }
+
+    infix fun runs(speed: String) {
+        println("runs $speed")
+    }
+}
+
+fun operate(block: Robot.(Robot) -> Unit) {
+    val robot = Robot();
+    robot.block(robot);
+}
+fun main() {
+     operate {
+        it turns left
+        it turns right
+        it runs fast
+    }
+}
+
